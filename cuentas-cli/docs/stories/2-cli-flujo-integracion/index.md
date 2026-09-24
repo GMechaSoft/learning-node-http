@@ -2,7 +2,7 @@
 story_number: 2
 title: "CLI de Ejecución Automatizada del Flujo de Gestión de Cuentas y Notas"
 slug: "cli-flujo-integracion"
-estado: "En Desarrollo (Dev-Rápido)"
+estado: "Lista para Revisión"
 autor: "Gerson Sanchez"
 fecha_creacion: "2026-09-24"
 es_resultado_slicing: false
@@ -38,15 +38,15 @@ pnf_vigencia: "SIN_MEDICION"
 verificacion_status: "Pendiente"
 verificacion_at:
 pnf_cosmic_ref:
-medicion_attempt_status:
-medicion_attempt_at:
-medicion_attempt_reason:
+medicion_attempt_status: "PENDING_STRATEGY"
+medicion_attempt_at: "2026-09-24 16:32"
+medicion_attempt_reason: "STRATEGY_NOT_APPROVED"
 normalization_contract_hash:
-dev_ia_session_minutes:
-dev_manual_minutes:
-dev_total_minutes:
-dev_responsable:
-dev_closed_at:
+dev_ia_session_minutes: 25
+dev_manual_minutes: 5
+dev_total_minutes: 30
+dev_responsable: gerson.sanchez
+dev_closed_at: "2026-09-24 16:32"
 ---
 
 # Historia #2: CLI de Ejecución Automatizada del Flujo de Gestión de Cuentas y Notas
@@ -58,7 +58,8 @@ dev_closed_at:
 | Creación HU | ✅ Completada | 2026-09-24 | Gerson Sanchez |
 | Medición COSMIC | ⏳ Pendiente | | PO/Analista |
 | Refinamiento | ✅ Completada | 2026-09-24 | Gerson Sanchez |
-| Desarrollo | ⏳ Pendiente | | Developer |
+| Desarrollo | ✅ Completada (Dev-Rápido) | 2026-09-24 | gerson.sanchez |
+| Revisión | ⏳ Pendiente | | Reviewer |
 
 ## Archivos de esta Historia
 
@@ -74,8 +75,8 @@ dev_closed_at:
 
 | Fase        | Inicio                    | Fin |
 | ----------- | ------------------------- | --- |
-| Creación HU | 2026-09-24 16:15          |     |
-| Desarrollo  | 2026-09-24 16:15          |     |
+| Creación HU | 2026-09-24 16:15          | 2026-09-24 16:15 |
+| Desarrollo  | 2026-09-24 16:15          | 2026-09-24 16:32 |
 
 ---
 

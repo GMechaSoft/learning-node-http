@@ -54,7 +54,7 @@ Arquitectura: CLI de un solo comando (PoC) — TypeScript ESM con `fetch` nativo
 ### Tareas de Implementación
 
 #### Fase 1: Base del proyecto
-- [ ] **T1: Migrar `package.json` a ESM + TS** — `"type": "module"`, `engines: node ^24.21`, devDependencies `typescript` + `tsx` + `@types/node`, scripts: `dev` = `tsx src/index.ts`, `build` = `tsc`, `start` = `node dist/index.js` — `package.json` (Base: `cuentas-webapi/package.json`)
+- [x] **T1: Migrar `package.json` a ESM + TS** — `"type": "module"`, `engines: node ^24.21`, devDependencies `typescript` + `tsx` + `@types/node`, scripts: `dev` = `tsx src/index.ts`, `build` = `tsc`, `start` = `node dist/index.js` — `package.json` (Base: `cuentas-webapi/package.json`)
 - [ ] **T2: `tsconfig.json`** — `module: NodeNext`, `moduleResolution: NodeNext`, `target: ES2022`, `outDir: dist`, `strict: true`, `rootDir: src` — `tsconfig.json`
 
 #### Fase 2: Núcleo del CLI
