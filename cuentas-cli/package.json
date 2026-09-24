@@ -1,0 +1,17 @@
+{
+  "name": "cuentas-cli",
+  "version": "1.0.0",
+  "description": "cli que consume la api de cuentas",
+  "keywords": [
+    "cli",
+    "typescript",
+    "learning"
+  ],
+  "author": "gerson sanchez",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "dev": "node --watch src/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}
