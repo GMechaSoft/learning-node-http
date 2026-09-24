@@ -11,10 +11,16 @@
   ],
   "license": "ISC",
   "author": "gerson sanchez",
-  "type": "commonjs",
+  "type": "module",
   "main": "src/index.js",
+  "engines": {
+    "node": "^24.21"
+  },
+  "dependencies": {
+    "mssql": "^12"
+  },
   "scripts": {
-    "dev": "npm run dev",
+    "dev": "node --watch src/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   }
 }

@@ -1,0 +1,187 @@
+type: collection.insomnia.rest/5.0
+schema_version: "5.1"
+name: Pago Credito Digital
+meta:
+  id: wrk_scratchpad
+  created: 1765313953848
+  modified: 1784292053302
+  description: ""
+collection:
+  - url: http://localhost:5031/api/NotificarVerificacionOrdenes?idConexion=ukL8yndpK_eeryCMBd0HWw
+    name: New Request
+    meta:
+      id: req_52e6d29f5d75461fad0a76d380f9271e
+      created: 1765314090614
+      modified: 1782489915713
+      isPrivate: false
+      description: ""
+      sortKey: -1765314090614
+    method: POST
+    body:
+      mimeType: application/json
+      text: |-
+        {
+          "descripcion": "prueba",
+          "urlRetorno": "string",
+          "tipoRespuesta": 1
+        }
+    headers:
+      - name: Content-Type
+        value: application/json
+      - name: User-Agent
+        value: insomnia/12.1.0
+        description: ""
+        disabled: false
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:5030/api/Compra/verificar/22072026091426144966612/14298.48/2021-07-03
+    name: Verificar Compra
+    meta:
+      id: req_942ad7d835ef45cbaf0644755c8d95e9
+      created: 1784292078165
+      modified: 1785956319950
+      isPrivate: false
+      description: ""
+      sortKey: -1765314090564
+    method: GET
+    headers:
+      - name: User-Agent
+        value: insomnia/12.1.0
+        description: ""
+        disabled: false
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:5030/api/Pago/Netactica/22072026091426144966612/6eEn7NNHwMwbJVlewBMZ4w/28ea6e69-9877-4656-0093-08da5b7b48c5/false/
+      /
+    name: Verificar Compra Error
+    meta:
+      id: req_972c64c4fb304cff923886bf81f55093
+      created: 1784305722029
+      modified: 1785956311397
+      isPrivate: false
+      description: ""
+      sortKey: -1765314090514
+    method: GET
+    headers:
+      - name: User-Agent
+        value: insomnia/12.1.0
+        description: ""
+        disabled: false
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:5031/api/Liquidador
+    name: Liquidador
+    meta:
+      id: req_5780ee56200a454288f53cdb192da46b
+      created: 1784312814410
+      modified: 1784673853143
+      isPrivate: false
+      description: ""
+      sortKey: -1765314090464
+    method: POST
+    body:
+      mimeType: application/json
+      text: |-
+        {
+          "intValor": 4009999.00,
+            "cod_cli": "42775851",
+            "cod_cco": "38",
+            "id_orden": "1584412281785-01",
+            "frecuencia": 0,
+            "lineas": "",
+            "iva": 0,
+            "idSeller": "",
+            "cuotaRegalada": "0",
+            "tipoCredParam": "44",
+            "numCuotas": 0,
+            //"fechaDeViaje": "2026-07-17"
+            //"fechaDeViaje": "2026-07-21 17:50"
+            //"fechaDeViaje": "2026-07-17T16:41:36.427Z"
+        }
+    headers:
+      - name: Content-Type
+        value: application/json
+      - name: User-Agent
+        value: insomnia/12.1.0
+        description: ""
+        disabled: false
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:5030/api/Pago/simulador/23072026113658077181486010/b94e8e8e-7c77-4a1b-a9d6-533bf89ce680/bDGvByE7NnEniHRD98j-Qg/false/
+      /
+    name: "PRUEBA AGAVAL "
+    meta:
+      id: req_2d809248453f42f2b00e032e241f105a
+      created: 1785183197498
+      modified: 1785184974622
+      isPrivate: false
+      description: ""
+      sortKey: -1765314090589
+    method: POST
+    body:
+      mimeType: application/json
+      text: |-
+        {
+          "descripcion": "prueba",
+          "urlRetorno": "string",
+          "tipoRespuesta": 1
+        }
+    headers:
+      - name: Content-Type
+        value: application/json
+      - name: User-Agent
+        value: insomnia/12.1.0
+        description: ""
+        disabled: false
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - name: Pago Crédito Digital
+    meta:
+      id: fld_9da834f65a2148e9b5734f70731e4648
+      created: 1785958655699
+      modified: 1790277837843
+      sortKey: -1785958655699
+      description: ""
+cookieJar:
+  name: Default Jar
+  meta:
+    id: jar_99d30891da4bdcebc63947a8fc17f076de878684
+    created: 1765314068304
+    modified: 1765314068304
+environments:
+  name: Base Environment
+  meta:
+    id: env_99d30891da4bdcebc63947a8fc17f076de878684
+    created: 1765314068296
+    modified: 1765314068296
+    isPrivate: false

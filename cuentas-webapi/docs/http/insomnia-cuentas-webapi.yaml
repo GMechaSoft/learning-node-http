@@ -1,0 +1,334 @@
+type: collection.insomnia.rest/5.0
+schema_version: "5.1"
+name: cuentas-webapi - CRUD Cuentas (US 1.1)
+meta:
+  id: wrk_cuentas_webapi_crud
+  created: 1784292053302
+  modified: 1784292053302
+  description: "Pruebas de integracion - US 1.1 CRUD de cuentas financieras. API en http://localhost:3000 (node src/index.js con env MSSQL_USER/MSSQL_PASS/MSSQL_DATABASE). Ejecutar en orden 1 -> 12: asume id=1 disponible en la BD (o ajustar el id en los requests 3, 4, 5, 6 y 10)."
+collection:
+  - url: http://localhost:3000/cuentas
+    name: 1. Crear cuenta (esperado 201 + id)
+    meta:
+      id: req_3f2a9c1b8d4e5f6a7b8c9d0e1f2a3b4c
+      created: 1784292053302
+      modified: 1784292053302
+      isPrivate: false
+      description: "AC Escenario 1: POST con descripcion valida -> 201 y el id generado (INT IDENTITY). La cuenta queda registrada en la BD."
+      sortKey: -1784292053302
+    method: POST
+    body:
+      mimeType: application/json
+      text: |-
+        {
+          "descripcion": "Cuenta de ahorro"
+        }
+    headers:
+      - name: Content-Type
+        value: application/json
+      - name: User-Agent
+        value: insomnia/12.1.0
+        description: ""
+        disabled: false
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:3000/cuentas
+    name: 2. Listar cuentas (esperado 200)
+    meta:
+      id: req_4a3b0d2c9e5f6a7b8c9d0e1f2a3b4c5d
+      created: 1784292053302
+      modified: 1784292053302
+      isPrivate: false
+      description: "AC Escenario 2: GET lista las cuentas activas (id y descripcion)."
+      sortKey: -1784292053252
+    method: GET
+    headers:
+      - name: User-Agent
+        value: insomnia/12.1.0
+        description: ""
+        disabled: false
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:3000/cuentas/1
+    name: 3. Obtener cuenta por id (esperado 200)
+    meta:
+      id: req_5b4c1e3d0f6a7b8c9d0e1f2a3b4c5d6e
+      created: 1784292053302
+      modified: 1784292053302
+      isPrivate: false
+      description: "AC Escenario 2b: GET por id -> 200 con los datos de la cuenta."
+      sortKey: -1784292053202
+    method: GET
+    headers:
+      - name: User-Agent
+        value: insomnia/12.1.0
+        description: ""
+        disabled: false
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:3000/cuentas/1
+    name: 4. Actualizar cuenta (esperado 200)
+    meta:
+      id: req_6c5d2f4e1a7b8c9d0e1f2a3b4c5d6e7f
+      created: 1784292053302
+      modified: 1784292053302
+      isPrivate: false
+      description: "AC Escenario 3: PUT con descripcion valida -> 200 y la descripcion persistida cambia."
+      sortKey: -1784292053152
+    method: PUT
+    body:
+      mimeType: application/json
+      text: |-
+        {
+          "descripcion": "Cuenta de ahorro actualizada"
+        }
+    headers:
+      - name: Content-Type
+        value: application/json
+      - name: User-Agent
+        value: insomnia/12.1.0
+        description: ""
+        disabled: false
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:3000/cuentas/1
+    name: 5. Eliminar cuenta (esperado 204)
+    meta:
+      id: req_7d6e3a5f2b8c9d0e1f2a3b4c5d6e7f8a
+      created: 1784292053302
+      modified: 1784292053302
+      isPrivate: false
+      description: "AC Escenario 4: DELETE -> 204 sin cuerpo. Eliminacion logica: UPDATE estado=0, la fila permanece en la BD."
+      sortKey: -1784292053102
+    method: DELETE
+    headers:
+      - name: User-Agent
+        value: insomnia/12.1.0
+        description: ""
+        disabled: false
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:3000/cuentas/1
+    name: 6. Cuenta eliminada (esperado 404)
+    meta:
+      id: req_8e7f4b6a3c9d0e1f2a3b4c5d6e7f8a9b
+      created: 1784292053302
+      modified: 1784292053302
+      isPrivate: false
+      description: "AC Escenario 4: tras eliminar, la cuenta ya no figura (404). Verificar en BD que la fila sigue con estado=0."
+      sortKey: -1784292053052
+    method: GET
+    headers:
+      - name: User-Agent
+        value: insomnia/12.1.0
+        description: ""
+        disabled: false
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:3000/cuentas
+    name: 7. Body JSON invalido (esperado 400)
+    meta:
+      id: req_9f8a5c7b4d0e1f2a3b4c5d6e7f8a9b0c
+      created: 1784292053302
+      modified: 1784292053302
+      isPrivate: false
+      description: "AC Escenario 5: body no es JSON valido -> 400 { error }."
+      sortKey: -1784292053002
+    method: POST
+    body:
+      mimeType: application/json
+      text: |-
+        { "descripcion": "sin cerrar"
+    headers:
+      - name: Content-Type
+        value: application/json
+      - name: User-Agent
+        value: insomnia/12.1.0
+        description: ""
+        disabled: false
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:3000/cuentas
+    name: 8. Content-Type incorrecto (esperado 400)
+    meta:
+      id: req_a09b6d8c5e1f2a3b4c5d6e7f8a9b0c1d
+      created: 1784292053302
+      modified: 1784292053302
+      isPrivate: false
+      description: "AC Escenario 5: Content-Type != application/json -> 400 { error }."
+      sortKey: -1784292052952
+    method: POST
+    body:
+      mimeType: text/plain
+      text: |-
+        {"descripcion": "Cuenta"}
+    headers:
+      - name: Content-Type
+        value: text/plain
+      - name: User-Agent
+        value: insomnia/12.1.0
+        description: ""
+        disabled: false
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:3000/cuentas
+    name: 9. Descripcion vacia (esperado 400)
+    meta:
+      id: req_b1ac7e9d6f2a3b4c5d6e7f8a9b0c1d2e
+      created: 1784292053302
+      modified: 1784292053302
+      isPrivate: false
+      description: "AC Escenario 5: descripcion vacia/inexistente (invariante de dominio) -> 400 { error }."
+      sortKey: -1784292052902
+    method: POST
+    body:
+      mimeType: application/json
+      text: |-
+        {
+          "descripcion": "   "
+        }
+    headers:
+      - name: Content-Type
+        value: application/json
+      - name: User-Agent
+        value: insomnia/12.1.0
+        description: ""
+        disabled: false
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:3000/cuentas/1
+    name: 10. Metodo no permitido (esperado 405 + Allow)
+    meta:
+      id: req_c2bd8f0e7a3b4c5d6e7f8a9b0c1d2e3f
+      created: 1784292053302
+      modified: 1784292053302
+      isPrivate: false
+      description: "AC Escenario 6: metodo no soportado en ruta existente -> 405 con header Allow (GET, PUT, DELETE)."
+      sortKey: -1784292052852
+    method: PATCH
+    headers:
+      - name: User-Agent
+        value: insomnia/12.1.0
+        description: ""
+        disabled: false
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:3000/cuentas/999999
+    name: 11. Recurso inexistente (esperado 404)
+    meta:
+      id: req_d3ce9a1f8b4c5d6e7f8a9b0c1d2e3f4a
+      created: 1784292053302
+      modified: 1784292053302
+      isPrivate: false
+      description: "AC Escenario 7: id que no existe en la BD -> 404 { error }."
+      sortKey: -1784292052802
+    method: GET
+    headers:
+      - name: User-Agent
+        value: insomnia/12.1.0
+        description: ""
+        disabled: false
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:3000/noexiste
+    name: 12. Ruta inexistente (esperado 404)
+    meta:
+      id: req_e4df0b2a9c5d6e7f8a9b0c1d2e3f4a5b
+      created: 1784292053302
+      modified: 1784292053302
+      isPrivate: false
+      description: "Ruta que no esta registrada en el router -> 404 { error }."
+      sortKey: -1784292052752
+    method: GET
+    headers:
+      - name: User-Agent
+        value: insomnia/12.1.0
+        description: ""
+        disabled: false
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+cookieJar:
+  name: Default Jar
+  meta:
+    id: jar_7a3f2b1c9d8e4f605172a3b4c5d6e7f8
+    created: 1784292053302
+    modified: 1784292053302
+environments:
+  name: Base Environment
+  meta:
+    id: env_1f2e3d4c5b6a798091a2b3c4d5e6f708
+    created: 1784292053302
+    modified: 1784292053302
+    isPrivate: false

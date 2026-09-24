@@ -5,17 +5,15 @@
     }
   ],
   "settings": {
-	"files.exclude": {
-		"**/.git": true,
-		"**/.svn": true,
-		"**/.hg": true,
-		"**/.jj": true,
-		"**/.DS_Store": true,
-		"**/Thumbs.db": true,
-		"**.claude": true,
-		"**.github": true,
-		".ceiba-metodo": true
-	},
+    "files.exclude": {
+      "**/.git": true,
+      "**/.svn": true,
+      "**/.hg": true,
+      "**/.jj": true,
+      "**/.DS_Store": true,
+      "**/Thumbs.db": true,
+      ".ceiba-metodo": true
+    },
     "chat.planAgent.defaultModel": "miia (ceiba)",
     "inlineChat.defaultModel": "miia (ceiba)",
     "chatCustomizationsEvaluations.model": "miia",

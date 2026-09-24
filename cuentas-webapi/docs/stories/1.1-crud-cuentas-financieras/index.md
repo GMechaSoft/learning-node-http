@@ -2,7 +2,7 @@
 story_number: 1.1
 title: "CRUD de cuentas financieras"
 slug: "crud-cuentas-financieras"
-estado: "Borrador (PO)"
+estado: "Lista para Revisión"
 autor: "Gerson Sanchez"
 fecha_creacion: "2026-09-24"
 es_resultado_slicing: true
@@ -42,11 +42,11 @@ medicion_attempt_status:
 medicion_attempt_at:
 medicion_attempt_reason:
 normalization_contract_hash:
-dev_ia_session_minutes:
-dev_manual_minutes:
-dev_total_minutes:
-dev_responsable:
-dev_closed_at:
+dev_ia_session_minutes: 36
+dev_manual_minutes: 10
+dev_total_minutes: 46
+dev_responsable: gerson.sanchez
+dev_closed_at: 2026-09-24 14:31
 ---
 
 # Historia #1.1: CRUD de cuentas financieras
@@ -60,9 +60,9 @@ dev_closed_at:
 | Medición PNF | ⏳ Pendiente | | Developer |
 | Verificación cruzada | ⏳ Pendiente | | Developer |
 | Análisis Arquitectónico | ⏳ Pendiente | | Arquitecto |
-| Refinamiento Técnico | ⏳ Pendiente | | Developer |
+| Refinamiento Técnico | ✅ Completada | 2026-09-24 | Gerson Sanchez (Developer) |
 | Estimación | ⏳ Pendiente | | Developer |
-| Desarrollo | ⏳ Pendiente | | Developer |
+| Desarrollo | ✅ Completada | 2026-09-24 | Gerson Sanchez (Developer) (Dev-Rápido) |
 
 ## Archivos de esta Historia
 
@@ -83,6 +83,7 @@ dev_closed_at:
 | Fase        | Inicio                    | Fin |
 | ----------- | ------------------------- | --- |
 | Creación HU | 2026-09-24 13:01          | 2026-09-24 13:11 |
+| Desarrollo  | 2026-09-24 13:55          | 2026-09-24 14:31 |
 
 ---
 

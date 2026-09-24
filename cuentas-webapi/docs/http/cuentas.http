@@ -1,0 +1,53 @@
+@host = http://localhost:3000
+@cuentaId = 1
+
+### Escenario 1: Crear cuenta (esperado: 201 + { "id": ... })
+POST {{host}}/cuentas
+Content-Type: application/json
+
+{ "descripcion": "Cuenta de ahorro" }
+
+### Escenario 2: Consultar cuentas (esperado: 200 + arreglo)
+GET {{host}}/cuentas
+
+### Escenario 2b: Consultar cuenta por id (esperado: 200 + cuenta)
+GET {{host}}/cuentas/{{cuentaId}}
+
+### Escenario 3: Actualizar cuenta (esperado: 200 + cuenta con nueva descripción)
+PUT {{host}}/cuentas/{{cuentaId}}
+Content-Type: application/json
+
+{ "descripcion": "Cuenta de ahorro actualizada" }
+
+### Escenario 4: Eliminar cuenta lógica (esperado: 204, sin cuerpo)
+DELETE {{host}}/cuentas/{{cuentaId}}
+
+### Escenario 4b: Cuenta eliminada no figura (esperado: 404)
+GET {{host}}/cuentas/{{cuentaId}}
+
+### Escenario 5a: Body no es JSON válido (esperado: 400)
+POST {{host}}/cuentas
+Content-Type: application/json
+
+{ "descripcion": "sin cerrar"
+
+### Escenario 5b: Content-Type incorrecto (esperado: 400)
+POST {{host}}/cuentas
+Content-Type: text/plain
+
+{ "descripcion": "Cuenta" }
+
+### Escenario 5c: Descripción vacía (esperado: 400)
+POST {{host}}/cuentas
+Content-Type: application/json
+
+{ "descripcion": "   " }
+
+### Escenario 6: Método no soportado en ruta existente (esperado: 405 + header Allow)
+PATCH {{host}}/cuentas/{{cuentaId}}
+
+### Escenario 7a: Recurso inexistente (esperado: 404)
+GET {{host}}/cuentas/999999
+
+### Escenario 7b: Ruta inexistente (esperado: 404)
+GET {{host}}/noexiste
