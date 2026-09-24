@@ -1,47 +1,56 @@
-# 🚀 Development Handoff: Arquitectura base (GPS) — Web API de cuentas financieras (PoC Node.js)
+# 🚀 Development Handoff: US 1.1 — CRUD de cuentas financieras (implementación)
 
 **Date:** 2026-09-24  
-**Repository Branch:** master (último commit `7e98289` "historia de usuario"; cambios de arquitectura **sin commit**)
+**Repository Branch:** master (HEAD `8a215de` "Desarrollo" — todos los cambios de US 1.1 **ya commitados** por el usuario a las 15:03)
+
+> Nota: el repo git vive un nivel arriba del workspace; los paths llevan prefijo `cuentas-webapi/` (igual que en `git status`). El handoff previo (fase Arquitecto/GPS) quedó reemplazado por este.
 
 ---
 
 ## 🎯 1. Objective
-Definir la **arquitectura base** (fase Arquitecto del Método Ceiba) antes de implementar cualquier código: GPS arquitectónico ejecutivo con decisiones D1–D11 para la **Web API de cuentas financieras + notas débito/crédito** (CRUD, persistencia MSSQL local). Incluye el requisito PO agregado en sesión: la implementación debe usar **DDD + arquitectura hexagonal + CQRS mínimo** con capas de aplicación, dominio y datos (repositorios).
-
-Contexto previo (fase PO, ya commitada en `7e98289`): historias `#1` (padre, sliceada), `1.1` (CRUD cuentas, 7 ACs) y `1.2` (CRUD notas, 5 ACs). NFRs: Node ≥ 24 sin frameworks (`node:http` nativo), ESM, `async/await` + APIs promesa (sin `util.promisify`), errores JSON `400`/`404`/`405`, eliminación lógica por cambio de estado, sin auth/UI.
+Implementar la **US 1.1 (CRUD de cuentas financieras)** sobre la arquitectura base aprobada (GPS D1–D11, handoff de la fase Arquitecto): Web API REST de cuentas con `node:http` nativo (sin frameworks), **hexagonal + DDD + CQRS mínimo**, persistencia `mssql` v12 en MSSQL local (BD `cuentas_webapi`, tabla `cuentas`), contrato de errores JSON `{"error"}` (400/404/405/500) y **eliminación lógica** (`UPDATE estado=0`, nunca `DELETE` físico).
 
 ## 📊 2. Current Status
-- **Status:** In Progress
-- **Fase Arquitecto COMPLETADA y confirmada por el usuario**: GPS generado, revisado (2 vueltas) y aprobado en `docs/architecture/index.md`; contexto IA generado en `.github/copilot-instructions.md` (§ARCHITECTURE).
-- Sin código de implementación todavía: `src/index.js` sigue vacío; `package.json` aún en su estado previo (commonjs, sin deps) — las correcciones quedaron como decisiones D1/D2 pendientes de aplicar.
-- Working tree: `docs/architecture/index.md` modificado, `.github/copilot-instructions.md` nuevo (⚠️ **gitignoreado** — ver sección 5), `handoff.md` untracked, `.gitignore` modificado (cambio previo a esta sesión: exclusiones de skills del método).
+- **Status:** Ready for Testing
+- API completa y verificada: **DoD 12/12** peticiones contra API en vivo (las 7 AC de la US + contrato de errores) y eliminación lógica confirmada en BD (registro permanece con `estado=0`). El usuario está en verificación propia con la colección Insomnia.
+- Arranque del servidor: en el terminal de PowerShell definir `$env:MSSQL_USER`, `$env:MSSQL_PASS`, `$env:MSSQL_DATABASE` y ejecutar `npm run dev` (puerto 3000). Sin credenciales en código (D4: fail fast si faltan env).
+- Working tree limpio salvo `.vscode/learning-nodejs-http.code-workspace` (modificado, no de esta tarea).
+- Pendiente de cierre: **medición** — el prelude de `medir-historia` quedó en HALT `PENDING_STRATEGY` (no existe `measurement-strategy.json`); CFP/PNF en `index.md` siguen en `SIN_MEDICION`/`Pendiente`.
 
 ## 🗂️ 3. Files in Progress
-- `docs/architecture/index.md`
-- `.github/copilot-instructions.md`
-- `handoff.md`
-- `.gitignore` (cambio no de esta sesión)
+Incluidos en el commit `8a215de`:
+- `cuentas-webapi/package.json` (D1/D2: `type:module`, `mssql ^12`, `engines ^24.21`, `dev: node --watch src/index.js`) + `cuentas-webapi/package-lock.json`
+- `cuentas-webapi/src/index.js` (composition root: pool → repository → router → server; close en SIGINT/SIGTERM)
+- `cuentas-webapi/src/domain/cuenta.js` · `cuentas-webapi/src/domain/errores.js`
+- `cuentas-webapi/src/application/cuentas/ports.js` · `commands.js` · `queries.js`
+- `cuentas-webapi/src/data/connection.js` · `cuentas-webapi/src/data/cuenta-repository.js`
+- `cuentas-webapi/src/interfaces/http/http.js` · `router.js` · `errores.js` · `cuentas.js`
+- `cuentas-webapi/docs/http/cuentas.http` · `cuentas-webapi/docs/http/insomnia-cuentas-webapi.yaml` (12 peticiones para la verificación)
+- `cuentas-webapi/docs/sql/001-prerrequisito-cuentas.sql` (DDL de referencia, ya aplicado a la BD)
+- `cuentas-webapi/docs/stories/1.1-crud-cuentas-financieras/` — `refinamiento.md` y `dev-record.md` nuevos; `index.md` (estado "Lista para Revisión", métricas 46 min) y `cambios.md` actualizados
+- `cuentas-webapi/handoff.md` (este archivo)
+- ⚠️ El commit también incluye `cuentas-webapi/do-d-result.txt` (artefacto temporal de la DoD — se puede eliminar si no se va a conservar).
 
 ## 🛠️ 4. Changes Made
-- **GPS arquitectónico** (`docs/architecture/index.md`): reemplaza el estado "sin definir". Contiene: resumen ejecutivo y límites; diagrama de alto nivel (Mermaid) con las 4 capas hexagonales; modelo de datos (erDiagram) + **DDL de referencia** (tablas `cuentas`/`notas`, columna `estado BIT`, `CHECK` de tipo/monto, FK sin `ON DELETE`); stack validado contra máquina (Node v24.21.0 real; `mssql` 12.7.2 en npm); integraciones (HTTP JSON + TDS); contrato de errores.
-- **11 decisiones de arquitectura (D1–D11)**: D1 ESM `type:module` + `.js` · D2 `mssql ^12` + `engines ^24.21` + script `dev` corregido a `node --watch src/index.js` · D3 estructura `src/` hexagonal: `index.js` (composition root), `interfaces/http/`, `application/{cuentas,notas}/` (commands/queries/ports), `domain/`, `data/` · D4 conexión BD por env (`MSSQL_USER`/`MSSQL_PASS`/`MSSQL_CONNECTION`, default localhost:1433) · D5 eliminación = `DELETE` → `204`, operación `UPDATE estado` · D6 IDs `INT IDENTITY` · D7 `405` solo en ruta existente (con `Allow`), `404` en inexistente/eliminado · D8 CHECKs + FK en DDL · D9 pool connect en arranque / close en SIGTERM / 500 JSON · D10 CQRS mínimo (commands/queries por recurso, DI manual, sin bus de eventos) · D11 invariantes en el dominio con errores tipados que el adapter traduce a HTTP.
-- **Contexto IA** (`.github/copilot-instructions.md`): sección `<!-- SECTION:ARCHITECTURE -->` (≈270 tokens) con las reglas duras: capas obligatorias, `domain/` nunca importa HTTP ni `mssql`, puertos en `application/` implementados en `data/`, prohibiciones (frameworks, `util.promisify`, deps nuevas, auth, UI).
-- **Discrepancias documentado↔código** detectadas y resueltas como decisiones: `package.json` con `type=commonjs` (NFR pide ESM), sin dependencias (`mssql` ausente), sin `engines`, script `dev` auto-referencial (`npm run dev` → bucle).
+- **6 endpoints CRUD**: `GET /cuentas` (200 lista), `POST /cuentas` (201 + `{id}`), `GET /cuentas/{id}` (200/404), `PUT /cuentas/{id}` (200/400/404), `DELETE /cuentas/{id}` (204/404, eliminación lógica). `405` + header `Allow` en método inválido sobre ruta existente; `404` JSON en ruta inexistente o cuenta eliminada; `400` JSON en JSON inválido, `Content-Type` incorrecto o descripción vacía; `500` JSON en error inesperado.
+- **Dominio**: `Cuenta.crear` / `reconstruir` / `actualizarDescripcion` con invariante "descripción no vacía" → `CampoInvalidoError` (→400); `CuentaNoEncontradaError` (→404). `domain/` no importa HTTP ni `mssql` (regla D3).
+- **CQRS**: commands (`CrearCuenta`, `ActualizarCuenta`, `EliminarCuenta`) y queries (`ListarCuentas`, `ObtenerCuentaPorId`) separados; puerto `CuentaRepository` en `application/cuentas/ports.js` implementado en `data/cuenta-repository.js` (SQL parametrizado, `OUTPUT INSERTED.id`).
+- **Infraestructura**: pool MSSQL por env con fail fast en arranque y cierre en señal; router manual sobre `node:http` con plantillas `/cuentas/{id}`; `readJson` sobre promesa nativa.
+- **BD**: `CREATE DATABASE cuentas_webapi` + tabla `cuentas` aplicadas al MSSQL local (Docker, puerto 1433).
 
 ## ⚠️ 5. Attempts and Failures
-- **Attempt:** Crear `docs/architecture/index.md` con `create_file` (contenido nuevo completo).
-  - *Result:* Falló — el archivo ya existía (estado "sin definir" con decisiones PO).
-  - *Resolución:* reescrito vía reemplazo del bloque completo con `replace_string_in_file`; verificado por relectura.
-- **Attempt (sesión PO previa):** Invocar subagente INVEST enmarcado como agente del método → rechazado; re-invocado como análisis neutro → OK (INVEST 51/60, cobertura 9/9).
-- **Attempt (sesión PO previa):** Persistir `scope_continuity_findings` en `medicion/decisionRegistry.mjs` → módulo inexistente en esta instalación; hallazgos documentados en prosa ("Alcance y Continuidad" de cada `historia.md`).
-- **⚠️ Hallazgo:** `.gitignore` línea 8 ignora `.github/` — por tanto `.github/copilot-instructions.md` **no queda versionado** (no aparece en `git status` ni es trackeable sin `git add -f`). Si el contexto IA debe compartirse, excluir `copilot-instructions.md` del ignore o moverlo.
-- Nota: `git` del repositorio está un nivel arriba del workspace (paths con prefijo `cuentas-webapi/`).
+- **Attempt:** Primer run de la DoD contra la API recién implementada.
+  - *Result:* Las rutas con `{id}` devolvían `400 {"error":"id inválido: undefined"}` — `router.js::extraer` indexaba los grupos de captura con el índice de la parte de la URL, pero las partes estáticas no crean grupos de captura. *Root cause:* confusión parte-index vs grupo de captura. *Fix:* contador `grupo` que solo incrementa por cada `{param}`. DoD re-ejecutada: 12/12.
+- **Attempt:** Provisionar BD con una sola query que usaba separadores `GO`.
+  - *Result:* `Incorrect syntax near 'GO'` — el driver `mssql` no parsea el separador de lotes (es del cliente sqlcmd). *Fix:* ejecutar `CREATE DATABASE` y `CREATE TABLE` como consultas separadas sobre pools distintas. El DDL de referencia en `docs/sql/` conserva el `GO` (pensado para sqlcmd).
+- **Attempt:** Arrancar la API sin las variables de entorno (ocurrido en terminal del agente y reproducido por el usuario con `npm run dev`).
+  - *Result:* `Login failed for user ''` — es el **fail fast esperado (D9)**, no un bug: hay que definir `$env:MSSQL_USER/MSSQL_PASS/MSSQL_DATABASE` en el MISMO terminal donde corre el servidor; `node --watch` no re-lee env al reiniciarse (requiere Ctrl+C + reinicio completo).
+- **Attempt (medición):** Prelude de `medir-historia` (step-03b del dev-rapido) y rescates en steps 01/02/02b.
+  - *Result:* HALT exit 3 `PENDING_STRATEGY/STRATEGY_NOT_APPROVED` en todos los puntos — no existe `measurement-strategy.json` en el repo. Registrado en `cambios.md`; la medición queda pendiente de `/ceiba-generar-strategy`.
 
 ## 🔮 6. Next Steps (Upcoming Tasks)
-1. 🔲 Commitar los cambios de arquitectura (`docs/architecture/index.md`, `handoff.md`, y decidir el tratamiento de `.github/copilot-instructions.md` según el gitignore).
-2. 🔲 Preparar/estimar **US-001.1** con `ceiba-preparar-historia` (o `ceiba-dev-rapido`): refinamiento técnico + medición CFP COSMIC (hoy `Pendiente`) en `docs/stories/1.1-crud-cuentas-financieras/` — el análisis arquitectónico ya está cubierto por el GPS.
-3. 🔲 Aplicar D1/D2 a `package.json`: `"type":"module"`, `dependencies.mssql ^12`, `engines.node ^24.21`, `scripts.dev = "node --watch src/index.js"`; luego `npm install`.
-4. 🔲 Prerrequisito manual del usuario: crear BD local en MSSQL Server (puerto 1433) con el **DDL de referencia del GPS** (tablas `cuentas`, `notas`) y usuario de conexión; exportar `MSSQL_USER`/`MSSQL_PASS` (o `MSSQL_CONNECTION`).
-5. 🔲 Implementar US-001.1 sobre la estructura D3: `src/index.js` (composition root + router), `src/interfaces/http/` (adapter, `readJson`), `src/application/cuentas/` (commands/queries/ports), `src/domain/` (entidad Cuenta + errores), `src/data/` (pool + repositores MSSQL); endpoints `/cuentas` + `/cuentas/{id}` con ACs 1–7.
-6. 🔲 Verificación manual de la DoD de 1.1 con un cliente HTTP (p. ej. `.http` de VS Code): crear/consultar/actualizar/eliminar cuenta + eliminación lógica confirmada en la BD (registro permanece con `estado=0`).
-7. 🔲 Reiterar el ciclo (2→6) para **US-001.2** (CRUD notas): regla 404 "nota requiere cuenta existente (y activa)", `tipo ∈ {debito, credito}`, monto numérico positivo.
+1. 🔲 Completar la verificación propia con Insomnia: importar `docs/http/insomnia-cuentas-webapi.yaml` (API arriba en :3000 con env; la colección asume que `id=1` está libre, notado en su descripción).
+2. 🔲 Decidir cómo persistir las env de BD: wrapper `dev.ps1` en la raíz del workspace (opción recomendada, pendiente de confirmación del usuario) o `setx` (requiere terminal nuevo).
+3. 🔲 Generar la estrategia de medición (`/ceiba-generar-strategy`) y luego correr `ceiba-medir-historia` para cerrar US 1.1 con CFP COSMIC (hoy `SIN_MEDICION`/`Pendiente`).
+4. 🔲 Tratar los remanentes del working tree: eliminar `cuentas-webapi/do-d-result.txt` (artefacto temporal, ya commitado) y decidir sobre `.vscode/learning-nodejs-http.code-workspace` (modificado); commit resultante.
+5. 🔲 Arrancar **US 1.2** (CRUD notas débito/crédito): reutilizar el patrón de 1.1 1:1 — entidad `src/domain/nota.js` (invariantes `tipo ∈ {debito, credito}`, `monto > 0`), `src/application/notas/`, `src/data/nota-repository.js`, rutas `/notas` + `/notas/{id}`; aplicar antes el DDL de la tabla `notas` del GPS (la BD hoy solo tiene `cuentas`).
