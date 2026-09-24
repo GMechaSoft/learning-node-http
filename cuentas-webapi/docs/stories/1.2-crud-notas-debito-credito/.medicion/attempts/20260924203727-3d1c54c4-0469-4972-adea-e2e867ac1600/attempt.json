@@ -1,0 +1,12 @@
+{
+  "attempt_id": "20260924203727-3d1c54c4-0469-4972-adea-e2e867ac1600",
+  "story_id": "1.2",
+  "status": "PENDING_STRATEGY",
+  "started_at": "2026-09-24T20:37:27.277Z",
+  "updated_at": "2026-09-24T20:37:27.430Z",
+  "rieles": 1,
+  "work_dir": "d:\\workspace\\learning\\learning-nodejs-http\\cuentas-webapi\\docs\\stories\\1.2-crud-notas-debito-credito\\.medicion\\attempts\\20260924203727-3d1c54c4-0469-4972-adea-e2e867ac1600\\work",
+  "official_artifacts_modified": false,
+  "reason_code": "STRATEGY_NOT_APPROVED",
+  "detail": "No existe measurement-strategy.json"
+}

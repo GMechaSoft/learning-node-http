@@ -1,0 +1,479 @@
+type: collection.insomnia.rest/5.0
+schema_version: "5.1"
+name: cuentas-webapi - CRUD Notas (US 1.2)
+meta:
+  id: wrk_cuentas_webapi_crud_notas
+  created: 1784300000000
+  modified: 1784300000000
+  description: "Pruebas de integracion - US 1.2 CRUD de notas debito/credito. API en http://localhost:3000 (node src/index.js con env MSSQL_USER/MSSQL_PASS/MSSQL_DATABASE). Ejecutar en orden 1 -> 16: asume que existe una cuenta activa con id=1 en la BD y que el id de nota 1 esta libre (o ajustar cuentaId/notaId en los requests)."
+collection:
+  - url: http://localhost:3000/notas
+    name: 1. Crear nota credito (esperado 201 + id)
+    meta:
+      id: req_n1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1
+      created: 1784300000000
+      modified: 1784300000000
+      isPrivate: false
+      description: "AC Escenario 1: POST con cuenta existente, tipo credito, monto positivo y descripcion -> 201 y el id generado (INT IDENTITY). La nota queda registrada en la BD asociada a la cuenta."
+      sortKey: -1784299999950
+    method: POST
+    body:
+      mimeType: application/json
+      text: |-
+        {
+          "cuentaId": 1,
+          "tipo": "credito",
+          "monto": 150.75,
+          "descripcion": "Pago de cliente"
+        }
+    headers:
+      - name: Content-Type
+        value: application/json
+      - name: User-Agent
+        value: insomnia/12.1.0
+        description: ""
+        disabled: false
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:3000/notas
+    name: 2. Listar notas (esperado 200)
+    meta:
+      id: req_n2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2
+      created: 1784300000000
+      modified: 1784300000000
+      isPrivate: false
+      description: "AC Escenario 2: GET lista las notas activas (id, cuentaId, tipo, monto, descripcion)."
+      sortKey: -1784299999900
+    method: GET
+    headers:
+      - name: User-Agent
+        value: insomnia/12.1.0
+        description: ""
+        disabled: false
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:3000/notas/1
+    name: 3. Obtener nota por id (esperado 200)
+    meta:
+      id: req_n3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3
+      created: 1784300000000
+      modified: 1784300000000
+      isPrivate: false
+      description: "AC Escenario 2: GET por id -> 200 con los datos de la nota."
+      sortKey: -1784299999850
+    method: GET
+    headers:
+      - name: User-Agent
+        value: insomnia/12.1.0
+        description: ""
+        disabled: false
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:3000/notas/1
+    name: 4. Actualizar nota (esperado 200)
+    meta:
+      id: req_n4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4
+      created: 1784300000000
+      modified: 1784300000000
+      isPrivate: false
+      description: "AC Escenario 2: PUT con datos validos (tipo debito, monto, descripcion) -> 200 y el estado persistido cambia."
+      sortKey: -1784299999800
+    method: PUT
+    body:
+      mimeType: application/json
+      text: |-
+        {
+          "cuentaId": 1,
+          "tipo": "debito",
+          "monto": 80,
+          "descripcion": "Pago de cliente actualizado"
+        }
+    headers:
+      - name: Content-Type
+        value: application/json
+      - name: User-Agent
+        value: insomnia/12.1.0
+        description: ""
+        disabled: false
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:3000/notas/1
+    name: 5. Eliminar nota (esperado 204)
+    meta:
+      id: req_n5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5
+      created: 1784300000000
+      modified: 1784300000000
+      isPrivate: false
+      description: "AC Escenario 2: DELETE -> 204 sin cuerpo. Eliminacion logica: UPDATE estado=0, la fila permanece en la BD."
+      sortKey: -1784299999750
+    method: DELETE
+    headers:
+      - name: User-Agent
+        value: insomnia/12.1.0
+        description: ""
+        disabled: false
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:3000/notas/1
+    name: 6. Nota eliminada (esperado 404)
+    meta:
+      id: req_n6f6f6f6f6f6f6f6f6f6f6f6f6f6f6f6
+      created: 1784300000000
+      modified: 1784300000000
+      isPrivate: false
+      description: "AC Escenario 2: tras eliminar, la nota ya no figura (404). Verificar en BD que la fila sigue con estado=0."
+      sortKey: -1784299999700
+    method: GET
+    headers:
+      - name: User-Agent
+        value: insomnia/12.1.0
+        description: ""
+        disabled: false
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:3000/notas
+    name: 7. Nota contra cuenta inexistente (esperado 404)
+    meta:
+      id: req_n7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7
+      created: 1784300000000
+      modified: 1784300000000
+      isPrivate: false
+      description: "AC Escenario 3: POST con cuentaId que no existe -> 404 indicando que la cuenta no existe, y no se registra ninguna nota."
+      sortKey: -1784299999650
+    method: POST
+    body:
+      mimeType: application/json
+      text: |-
+        {
+          "cuentaId": 999999,
+          "tipo": "credito",
+          "monto": 10,
+          "descripcion": "Nota contra cuenta fantasma"
+        }
+    headers:
+      - name: Content-Type
+        value: application/json
+      - name: User-Agent
+        value: insomnia/12.1.0
+        description: ""
+        disabled: false
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:3000/notas
+    name: 8. Tipo invalido (esperado 400)
+    meta:
+      id: req_n8b8b8b8b8b8b8b8b8b8b8b8b8b8b8b8
+      created: 1784300000000
+      modified: 1784300000000
+      isPrivate: false
+      description: "AC Escenario 4: tipo diferente de debito/credito -> 400 { error }."
+      sortKey: -1784299999600
+    method: POST
+    body:
+      mimeType: application/json
+      text: |-
+        {
+          "cuentaId": 1,
+          "tipo": "transferencia",
+          "monto": 10,
+          "descripcion": "Tipo fuera del dominio"
+        }
+    headers:
+      - name: Content-Type
+        value: application/json
+      - name: User-Agent
+        value: insomnia/12.1.0
+        description: ""
+        disabled: false
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:3000/notas
+    name: 9. Monto no positivo (esperado 400)
+    meta:
+      id: req_n9c9c9c9c9c9c9c9c9c9c9c9c9c9c9c9
+      created: 1784300000000
+      modified: 1784300000000
+      isPrivate: false
+      description: "AC Escenario 4: monto negativo o cero -> 400 { error }."
+      sortKey: -1784299999550
+    method: POST
+    body:
+      mimeType: application/json
+      text: |-
+        {
+          "cuentaId": 1,
+          "tipo": "credito",
+          "monto": -5,
+          "descripcion": "Monto negativo"
+        }
+    headers:
+      - name: Content-Type
+        value: application/json
+      - name: User-Agent
+        value: insomnia/12.1.0
+        description: ""
+        disabled: false
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:3000/notas
+    name: 10. Monto no numerico (esperado 400)
+    meta:
+      id: req_n0d0d0d0d0d0d0d0d0d0d0d0d0d0d0d0
+      created: 1784300000000
+      modified: 1784300000000
+      isPrivate: false
+      description: "AC Escenario 4: monto como texto -> 400 { error }."
+      sortKey: -1784299999500
+    method: POST
+    body:
+      mimeType: application/json
+      text: |-
+        {
+          "cuentaId": 1,
+          "tipo": "credito",
+          "monto": "diez",
+          "descripcion": "Monto como texto"
+        }
+    headers:
+      - name: Content-Type
+        value: application/json
+      - name: User-Agent
+        value: insomnia/12.1.0
+        description: ""
+        disabled: false
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:3000/notas
+    name: 11. Descripcion vacia (esperado 400)
+    meta:
+      id: req_n1e1e1e1e1e1e1e1e1e1e1e1e1e1e1e1
+      created: 1784300000000
+      modified: 1784300000000
+      isPrivate: false
+      description: "AC Escenario 4: descripcion vacia/inexistente (invariante de dominio) -> 400 { error }."
+      sortKey: -1784299999450
+    method: POST
+    body:
+      mimeType: application/json
+      text: |-
+        {
+          "cuentaId": 1,
+          "tipo": "credito",
+          "monto": 10,
+          "descripcion": "   "
+        }
+    headers:
+      - name: Content-Type
+        value: application/json
+      - name: User-Agent
+        value: insomnia/12.1.0
+        description: ""
+        disabled: false
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:3000/notas
+    name: 12. Body JSON invalido (esperado 400)
+    meta:
+      id: req_n2f2f2f2f2f2f2f2f2f2f2f2f2f2f2f2
+      created: 1784300000000
+      modified: 1784300000000
+      isPrivate: false
+      description: "AC Escenario 4: body no es JSON valido -> 400 { error }."
+      sortKey: -1784299999400
+    method: POST
+    body:
+      mimeType: application/json
+      text: |-
+        { "cuentaId": 1, "tipo": "credito", "monto": 10, "descripcion": "sin cerrar"
+    headers:
+      - name: Content-Type
+        value: application/json
+      - name: User-Agent
+        value: insomnia/12.1.0
+        description: ""
+        disabled: false
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:3000/notas
+    name: 13. Content-Type incorrecto (esperado 400)
+    meta:
+      id: req_n3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3
+      created: 1784300000000
+      modified: 1784300000000
+      isPrivate: false
+      description: "AC Escenario 4: Content-Type != application/json -> 400 { error }."
+      sortKey: -1784299999350
+    method: POST
+    body:
+      mimeType: text/plain
+      text: |-
+        {"cuentaId": 1, "tipo": "credito", "monto": 10, "descripcion": "Nota"}
+    headers:
+      - name: Content-Type
+        value: text/plain
+      - name: User-Agent
+        value: insomnia/12.1.0
+        description: ""
+        disabled: false
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:3000/notas/1
+    name: 14. Metodo no permitido (esperado 405 + Allow)
+    meta:
+      id: req_n4b4b4b4b4b4b4b4b4b4b4b4b4b4b4b4
+      created: 1784300000000
+      modified: 1784300000000
+      isPrivate: false
+      description: "AC Escenario 5: metodo no soportado en ruta existente -> 405 con header Allow (GET, PUT, DELETE)."
+      sortKey: -1784299999300
+    method: PATCH
+    headers:
+      - name: User-Agent
+        value: insomnia/12.1.0
+        description: ""
+        disabled: false
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:3000/notas/999999
+    name: 15. Recurso inexistente (esperado 404)
+    meta:
+      id: req_n5c5c5c5c5c5c5c5c5c5c5c5c5c5c5c5
+      created: 1784300000000
+      modified: 1784300000000
+      isPrivate: false
+      description: "AC Escenario 2: id que no existe en la BD -> 404 { error }."
+      sortKey: -1784299999250
+    method: GET
+    headers:
+      - name: User-Agent
+        value: insomnia/12.1.0
+        description: ""
+        disabled: false
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:3000/noexiste
+    name: 16. Ruta inexistente (esperado 404)
+    meta:
+      id: req_n6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6
+      created: 1784300000000
+      modified: 1784300000000
+      isPrivate: false
+      description: "Ruta que no esta registrada en el router -> 404 { error }."
+      sortKey: -1784299999200
+    method: GET
+    headers:
+      - name: User-Agent
+        value: insomnia/12.1.0
+        description: ""
+        disabled: false
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+cookieJar:
+  name: Default Jar
+  meta:
+    id: jar_notas_7a3f2b1c9d8e4f605172a3b4c5d6
+    created: 1784300000000
+    modified: 1784300000000
+environments:
+  name: Base Environment
+  meta:
+    id: env_notas_1f2e3d4c5b6a798091a2b3c4d5e6f70
+    created: 1784300000000
+    modified: 1784300000000
+    isPrivate: false

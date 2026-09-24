@@ -1,0 +1,12 @@
+{
+  "attempt_id": "20260924203923-d65d8621-5508-46f6-bae6-68f4c941eb6c",
+  "story_id": "1.2",
+  "status": "PENDING_STRATEGY",
+  "started_at": "2026-09-24T20:39:23.652Z",
+  "updated_at": "2026-09-24T20:39:23.901Z",
+  "rieles": 1,
+  "work_dir": "d:\\workspace\\learning\\learning-nodejs-http\\cuentas-webapi\\docs\\stories\\1.2-crud-notas-debito-credito\\.medicion\\attempts\\20260924203923-d65d8621-5508-46f6-bae6-68f4c941eb6c\\work",
+  "official_artifacts_modified": false,
+  "reason_code": "STRATEGY_NOT_APPROVED",
+  "detail": "No existe measurement-strategy.json"
+}

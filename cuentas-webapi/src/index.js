@@ -4,8 +4,10 @@
 import http from 'node:http';
 import { crearPool, cerrarPool } from './data/connection.js';
 import { crearCuentaRepository } from './data/cuenta-repository.js';
+import { crearNotaRepository } from './data/nota-repository.js';
 import { crearRouter } from './interfaces/http/router.js';
 import { registrarRutasCuentas } from './interfaces/http/cuentas.js';
+import { registrarRutasNotas } from './interfaces/http/notas.js';
 import { responderErrorDominio } from './interfaces/http/errores.js';
 
 const PUERTO = Number(process.env.PORT || 3000);
@@ -15,9 +17,11 @@ async function main() {
   const pool = await crearPool();
 
   const cuentaRepository = crearCuentaRepository(pool);
+  const notaRepository = crearNotaRepository(pool);
 
   const router = crearRouter();
   registrarRutasCuentas(router, { repository: cuentaRepository });
+  registrarRutasNotas(router, { notaRepository, cuentaRepository });
 
   const server = http.createServer(async (req, res) => {
     try {

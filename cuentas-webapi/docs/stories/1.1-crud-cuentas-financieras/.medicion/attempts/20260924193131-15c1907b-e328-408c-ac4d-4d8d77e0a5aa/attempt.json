@@ -1,0 +1,12 @@
+{
+  "attempt_id": "20260924193131-15c1907b-e328-408c-ac4d-4d8d77e0a5aa",
+  "story_id": "1.1",
+  "status": "PENDING_STRATEGY",
+  "started_at": "2026-09-24T19:31:31.860Z",
+  "updated_at": "2026-09-24T19:31:32.006Z",
+  "rieles": 1,
+  "work_dir": "d:\\workspace\\learning\\learning-nodejs-http\\cuentas-webapi\\docs\\stories\\1.1-crud-cuentas-financieras\\.medicion\\attempts\\20260924193131-15c1907b-e328-408c-ac4d-4d8d77e0a5aa\\work",
+  "official_artifacts_modified": false,
+  "reason_code": "STRATEGY_NOT_APPROVED",
+  "detail": "No existe measurement-strategy.json"
+}

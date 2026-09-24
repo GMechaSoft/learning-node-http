@@ -1,0 +1,78 @@
+@host = http://localhost:3000
+@cuentaId = 1
+@notaId = 1
+
+### Escenario 1: Crear nota crédito (esperado: 201 + { "id": ... })
+POST {{host}}/notas
+Content-Type: application/json
+
+{ "cuentaId": {{cuentaId}}, "tipo": "credito", "monto": 150.75, "descripcion": "Pago de cliente" }
+
+### Escenario 2: Listar notas (esperado: 200 + arreglo)
+GET {{host}}/notas
+
+### Escenario 2b: Consultar nota por id (esperado: 200 + nota)
+GET {{host}}/notas/{{notaId}}
+
+### Escenario 3: Actualizar nota (esperado: 200 + nota actualizada)
+PUT {{host}}/notas/{{notaId}}
+Content-Type: application/json
+
+{ "cuentaId": {{cuentaId}}, "tipo": "debito", "monto": 80, "descripcion": "Pago de cliente actualizado" }
+
+### Escenario 4: Eliminar nota lógica (esperado: 204, sin cuerpo)
+DELETE {{host}}/notas/{{notaId}}
+
+### Escenario 4b: Nota eliminada no figura (esperado: 404)
+GET {{host}}/notas/{{notaId}}
+
+### Escenario 5: Nota contra cuenta inexistente (esperado: 404)
+POST {{host}}/notas
+Content-Type: application/json
+
+{ "cuentaId": 999999, "tipo": "credito", "monto": 10, "descripcion": "Nota contra cuenta fantasma" }
+
+### Escenario 6a: Tipo inválido (esperado: 400)
+POST {{host}}/notas
+Content-Type: application/json
+
+{ "cuentaId": {{cuentaId}}, "tipo": "transferencia", "monto": 10, "descripcion": "Tipo fuera del dominio" }
+
+### Escenario 6b: Monto no positivo (esperado: 400)
+POST {{host}}/notas
+Content-Type: application/json
+
+{ "cuentaId": {{cuentaId}}, "tipo": "credito", "monto": -5, "descripcion": "Monto negativo" }
+
+### Escenario 6c: Monto no numérico (esperado: 400)
+POST {{host}}/notas
+Content-Type: application/json
+
+{ "cuentaId": {{cuentaId}}, "tipo": "credito", "monto": "diez", "descripcion": "Monto como texto" }
+
+### Escenario 6d: Descripción vacía (esperado: 400)
+POST {{host}}/notas
+Content-Type: application/json
+
+{ "cuentaId": {{cuentaId}}, "tipo": "credito", "monto": 10, "descripcion": "   " }
+
+### Escenario 7a: Body no es JSON válido (esperado: 400)
+POST {{host}}/notas
+Content-Type: application/json
+
+{ "cuentaId": {{cuentaId}}, "tipo": "credito", "monto": 10, "descripcion": "sin cerrar"
+
+### Escenario 7b: Content-Type incorrecto (esperado: 400)
+POST {{host}}/notas
+Content-Type: text/plain
+
+{ "cuentaId": 1, "tipo": "credito", "monto": 10, "descripcion": "Nota" }
+
+### Escenario 8: Método no soportado en ruta existente (esperado: 405 + header Allow)
+PATCH {{host}}/notas/{{notaId}}
+
+### Escenario 9a: Recurso inexistente (esperado: 404)
+GET {{host}}/notas/999999
+
+### Escenario 9b: Ruta inexistente (esperado: 404)
+GET {{host}}/noexiste

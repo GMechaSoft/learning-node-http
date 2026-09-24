@@ -1,5 +1,9 @@
 node_modules/
 
+# Credenciales de desarrollo (D4: nunca en código ni commit)
+.dev-env.ps1
+.env
+
 # Método Ceiba - Auto-managed agent files
 .github/agents/metodo-ceiba-*.agent.md
 .claude/commands/metodo-ceiba-*.md
@@ -14,6 +18,3 @@ node_modules/
 
 .github/
 .claude/
-
-
-**/attempts/*

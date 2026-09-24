@@ -14,4 +14,9 @@ export class ErrorDominio extends Error {
 export class CampoInvalidoError extends ErrorDominio {}
 
 // Recurso no existe o fue eliminado lógicamente (estado = 0) → 404.
-export class CuentaNoEncontradaError extends ErrorDominio {}
+export class NoEncontradaError extends ErrorDominio {}
+
+// Variante por recurso (mensajes claros; la traducción a 404 mira la base).
+export class CuentaNoEncontradaError extends NoEncontradaError {}
+
+export class NotaNoEncontradaError extends NoEncontradaError {}
