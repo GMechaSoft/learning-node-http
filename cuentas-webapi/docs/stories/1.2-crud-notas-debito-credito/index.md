@@ -60,7 +60,7 @@ dev_closed_at:
 | Medición PNF | ⏳ Pendiente | | Developer |
 | Verificación cruzada | ⏳ Pendiente | | Developer |
 | Análisis Arquitectónico | ⏳ Pendiente | | Arquitecto |
-| Refinamiento Técnico | ⏳ Pendiente | | Developer |
+| Refinamiento Técnico | ✅ Completada | 2026-09-24 | Gerson Sanchez |
 | Estimación | ⏳ Pendiente | | Developer |
 | Desarrollo | ⏳ Pendiente | | Developer |
 
@@ -83,6 +83,7 @@ dev_closed_at:
 | Fase        | Inicio                    | Fin |
 | ----------- | ------------------------- | --- |
 | Creación HU | 2026-09-24 13:01          | 2026-09-24 13:11 |
+| Desarrollo  | 2026-09-24 15:29          | |
 
 ---
 
