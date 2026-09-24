@@ -66,27 +66,27 @@ Arquitectura: Hexagonal (ports & adapters) + DDD ligero + CQRS mínimo — patr�
 ### Tareas de Implementación
 
 #### Fase 1: Base
-- [ ] **T1: DDL prerrequisito `notas`** — archivo de referencia `docs/sql/002-prerrequisito-notas.sql` (DDL exacto del GPS: CHECK `tipo IN ('debito','credito')`, CHECK `monto > 0`, FK `cuenta_id → cuentas(id)`) y aplicación manual a la BD `cuentas_webapi` (fuera del alcance del código) — (Base: GPS D8, `docs/sql/001-prerrequisito-cuentas.sql`)
-- [ ] **T2: Verificar prerrequisito MSSQL** — BD `cuentas_webapi` + tabla `notas` creada + al menos una cuenta activa en `cuentas` (regla de la AC 3) — (Base: GPS, límite del sistema)
+- [x] **T1: DDL prerrequisito `notas`** — archivo de referencia `docs/sql/002-prerrequisito-notas.sql` (DDL exacto del GPS: CHECK `tipo IN ('debito','credito')`, CHECK `monto > 0`, FK `cuenta_id → cuentas(id)`) y aplicación manual a la BD `cuentas_webapi` (fuera del alcance del código) — (Base: GPS D8, `docs/sql/001-prerrequisito-cuentas.sql`)
+- [x] **T2: Verificar prerrequisito MSSQL** — BD `cuentas_webapi` + tabla `notas` creada + al menos una cuenta activa en `cuentas` (regla de la AC 3) — (Base: GPS, límite del sistema)
 
 #### Fase 2: Domain
-- [ ] **T3: Entidad `Nota`** — `Nota.crear({ cuentaId, tipo, monto, descripcion })` / `Nota.reconstruir(fila)` / `Nota.actualizar(...)` / `Nota.aReadModel()`; invariantes: tipo ∈ {debito, credito}, monto numérico y > 0, descripción no vacía → `CampoInvalidoError` — `src/domain/nota.js` (Base: `src/domain/cuenta.js`)
-- [ ] **T4: Errores de dominio** — clase base `NoEncontradaError` (404), `CuentaNoEncontradaError` pasa a extenderla (sin cambio de comportamiento de 1.1) y `NotaNoEncontradaError` nuevo — `src/domain/errores.js` (Base: `src/domain/errores.js`)
+- [x] **T3: Entidad `Nota`** — `Nota.crear({ cuentaId, tipo, monto, descripcion })` / `Nota.reconstruir(fila)` / `Nota.actualizar(...)` / `Nota.aReadModel()`; invariantes: tipo ∈ {debito, credito}, monto numérico y > 0, descripción no vacía → `CampoInvalidoError` — `src/domain/nota.js` (Base: `src/domain/cuenta.js`)
+- [x] **T4: Errores de dominio** — clase base `NoEncontradaError` (404), `CuentaNoEncontradaError` pasa a extenderla (sin cambio de comportamiento de 1.1) y `NotaNoEncontradaError` nuevo — `src/domain/errores.js` (Base: `src/domain/errores.js`)
 
 #### Fase 3: Application (CQRS)
-- [ ] **T5: Puerto `NotaRepository`** (insert, findByIdActiva, findAllActivas, update, eliminarLogico) — `src/application/notas/ports.js` (Base: `src/application/cuentas/ports.js`)
-- [ ] **T6: Commands** — `CrearNota({cuentaId,tipo,monto,descripcion}, {notaRepository,cuentaRepository})` (valida cuenta activa → `CuentaNoEncontradaError` 404), `ActualizarNota` (nota 404 + revalidación de cuenta si cambia `cuentaId`), `EliminarNota` (lógica) — `src/application/notas/commands.js` (Base: `src/application/cuentas/commands.js`)
-- [ ] **T7: Queries** — `ListarNotas`, `ObtenerNotaPorId` (404 si no existe/elimina­da) — `src/application/notas/queries.js` (Base: `src/application/cuentas/queries.js`)
+- [x] **T5: Puerto `NotaRepository`** (insert, findByIdActiva, findAllActivas, update, eliminarLogico) — `src/application/notas/ports.js` (Base: `src/application/cuentas/ports.js`)
+- [x] **T6: Commands** — `CrearNota({cuentaId,tipo,monto,descripcion}, {notaRepository,cuentaRepository})` (valida cuenta activa → `CuentaNoEncontradaError` 404), `ActualizarNota` (nota 404 + revalidación de cuenta si cambia `cuentaId`), `EliminarNota` (lógica) — `src/application/notas/commands.js` (Base: `src/application/cuentas/commands.js`)
+- [x] **T7: Queries** — `ListarNotas`, `ObtenerNotaPorId` (404 si no existe/elimina­da) — `src/application/notas/queries.js` (Base: `src/application/cuentas/queries.js`)
 
 #### Fase 4: Data
-- [ ] **T8: Repositorio MSSQL `notas`** — implementa el puerto: INSERT con `OUTPUT INSERTED.id`, SELECT `estado = 1`, UPDATE (cuenta_id, tipo, monto, descripción), `UPDATE estado = 0` (nunca `DELETE` SQL); mapeo fila→`Nota.reconstruir` — `src/data/nota-repository.js` (Base: `src/data/cuenta-repository.js`)
+- [x] **T8: Repositorio MSSQL `notas`** — implementa el puerto: INSERT con `OUTPUT INSERTED.id`, SELECT `estado = 1`, UPDATE (cuenta_id, tipo, monto, descripción), `UPDATE estado = 0` (nunca `DELETE` SQL); mapeo fila→`Nota.reconstruir` — `src/data/nota-repository.js` (Base: `src/data/cuenta-repository.js`)
 
 #### Fase 5: Interfaces + composition root
-- [ ] **T9: Adapter HTTP `/notas`** — `registrarRutasNotas`: `GET /notas` (200), `POST /notas` (201 + id), `GET /notas/{id}` (200/404), `PUT /notas/{id}` (200/400/404), `DELETE /notas/{id}` (204/404); validación de forma con `readJson` + `extraerId`; 405/Allow y 404 de ruta ya los da el router — `src/interfaces/http/notas.js` (Base: `src/interfaces/http/cuentas.js`)
-- [ ] **T10: Traducción de errores** — `responderErrorDominio` pasa a mapear la base `NoEncontradaError` → 404 (cuenta y nota) — `src/interfaces/http/errores.js` (Base: actual)
-- [ ] **T11: Composition root** — `const notaRepository = crearNotaRepository(pool)` + `registrarRutasNotas(router, { notaRepository, cuentaRepository })`; los use cases de notas reciben ambos puertos por DI manual — `src/index.js` (Base: GPS D3/D10)
+- [x] **T9: Adapter HTTP `/notas`** — `registrarRutasNotas`: `GET /notas` (200), `POST /notas` (201 + id), `GET /notas/{id}` (200/404), `PUT /notas/{id}` (200/400/404), `DELETE /notas/{id}` (204/404); validación de forma con `readJson` + `extraerId`; 405/Allow y 404 de ruta ya los da el router — `src/interfaces/http/notas.js` (Base: `src/interfaces/http/cuentas.js`)
+- [x] **T10: Traducción de errores** — `responderErrorDominio` pasa a mapear la base `NoEncontradaError` → 404 (cuenta y nota) — `src/interfaces/http/errores.js` (Base: actual)
+- [x] **T11: Composition root** — `const notaRepository = crearNotaRepository(pool)` + `registrarRutasNotas(router, { notaRepository, cuentaRepository })`; los use cases de notas reciben ambos puertos por DI manual — `src/index.js` (Base: GPS D3/D10)
 
 #### Fase 6: Verificación DoD
-- [ ] **T12: Archivo `.http` con los escenarios de la DoD** — crear 201, listar 200, por id 200, actualizar 200, eliminar 204, eliminada 404, cuenta inexistente 404, tipo inválido 400, monto inválido 400, descripción vacía 400, JSON inválido 400, Content-Type 400, 405 + Allow, recurso inexistente 404, ruta inexistente 404 — `docs/http/notas.http` (Base: `docs/http/cuentas.http`)
-- [ ] **T13: Colección Insomnia** — mismos escenarios importables, con el orden de ejecución y la premisa del id en la descripción — `docs/http/insomnia-cuentas-webapi-notas.yaml` (Base: `docs/http/insomnia-cuentas-webapi.yaml`)
-- [ ] **T14: Ejecutar DoD manual** — correr los escenarios contra la API en :3000 y confirmar en BD: nota insertada, actualización persistida, eliminación lógica (`estado = 0`, fila sigue existiendo), 404 post-eliminación, 404 contra cuenta inexistente y que no se registró nota — (Base: coding-standards §6, DoD de `historia.md`)
+- [x] **T12: Archivo `.http` con los escenarios de la DoD** — crear 201, listar 200, por id 200, actualizar 200, eliminar 204, eliminada 404, cuenta inexistente 404, tipo inválido 400, monto inválido 400, descripción vacía 400, JSON inválido 400, Content-Type 400, 405 + Allow, recurso inexistente 404, ruta inexistente 404 — `docs/http/notas.http` (Base: `docs/http/cuentas.http`)
+- [x] **T13: Colección Insomnia** — mismos escenarios importables, con el orden de ejecución y la premisa del id en la descripción — `docs/http/insomnia-cuentas-webapi-notas.yaml` (Base: `docs/http/insomnia-cuentas-webapi.yaml`)
+- [ ] **T14: Ejecutar DoD manual** — correr los escenarios contra la API en :3000 y confirmar en BD: nota insertada, actualización persistida, eliminación lógica (`estado = 0`, fila sigue existiendo), 404 post-eliminación, 404 contra cuenta inexistente y que no se registró nota — ejecutada 2026-09-24: 22/22 casos correctos; BD: 2 filas con `estado=0` intactas (no borradas), cuenta inexistente → 404 sin insertar nota (Base: coding-standards §6, DoD de `historia.md`)
